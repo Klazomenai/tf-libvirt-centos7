@@ -92,8 +92,7 @@ sudo yum -y --enablerepo=elrepo-kernel install kernel-lt
 sudo yum -y install qemu-img 
 sudo modprobe nbd max_part=8
 sudo qemu-nbd --connect=/dev/nbd0 /home/tudorg/Downloads/CentOS-7-x86_64-GenericCloud-1707.qcow2
-# Check
-sudo fdisk /dev/nbd0 -l 
+sudo fdisk /dev/nbd0 -l # Check
 sudo mount /dev/nbd0p1 /mnt
 sudo mkdir /mnt/root/.ssh/
 sudo chmod 600 /mnt/root/.ssh/
@@ -109,6 +108,21 @@ ssh-keygen # Pick the defaults
 sudo -i
 cat /home/<<Insert your user here>>/.ssh/id_rsa.pub >> /mnt/root/.ssh/authorized_keys
 exit
+```
+ - Allow root login for sshd
+For now allow root, in the future there should be another bootstrap/deploy user
+```sh
+sudo sed -i 's/^#PermitRootLogin yes/PermitRootLogin yes/' /mnt/etc/ssh/sshd_config
+```
+
+ - Keys only
+```sh
+sudo sed -i 's///' /mnt/etc/ssh/sshd_config
+PasswordAuthentication yes
+```
+
+ - Unmount and disconnect
+```sh
 sudo umount /mnt
 sudo qemu-nbd --disconnect /dev/nbd0 
 ```
