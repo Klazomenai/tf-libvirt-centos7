@@ -117,8 +117,7 @@ sudo sed -i 's/^#PermitRootLogin yes/PermitRootLogin yes/' /mnt/etc/ssh/sshd_con
 
  - Keys only
 ```sh
-sudo sed -i 's///' /mnt/etc/ssh/sshd_config
-PasswordAuthentication yes
+sudo sed -i 's/^PasswordAuthentication yes/PasswordAuthentication no/' /mnt/etc/ssh/sshd_config
 ```
 
  - Unmount and disconnect
